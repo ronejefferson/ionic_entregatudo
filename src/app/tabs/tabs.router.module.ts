@@ -8,6 +8,16 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: 'addUsuario',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../pages/add-Usuario/add-Usuario.module').then(m => m.AddUsuarioPageModule)
+          }
+        ]
+      },
+      {
         path: 'tab1',
         children: [
           {
@@ -18,22 +28,12 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'addUsuario',
+        path: 'listUsuario',
         children: [
           {
             path: '',
             loadChildren: () =>
-              import('../pages/add-usuario/add-usuario.module').then(m => m.AddUsuarioPageModule)
-          }
-        ]
-      },
-      {
-        path: 'tab2',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+              import(('../pages/list-usuario/list-usuario.module')).then(m => m.listUsuarioPageModule)
           }
         ]
       },

@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from 'src/app/model/usuario';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { Entrega } from 'src/app/model/entrega';
+import { EntregaService } from 'src/app/services/entrega.service';
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-add-usuario',
-  templateUrl: './add-usuario.page.html',
-  styleUrls: ['./add-usuario.page.scss'],
+  selector: 'app-add-entrega',
+  templateUrl: './add-entrega.page.html',
+  styleUrls: ['./add-entrega.page.scss'],
 })
-export class AddUsuarioPage implements OnInit {
+export class AddEntregaPage implements OnInit {
 
-  protected usuario: Usuario = new Usuario;
+  protected entrega: Entrega = new Entrega;
   protected id: string = null;
 
   constructor(
-    protected usuarioService: UsuarioService,
+    protected entregaService: EntregaService,
     protected alertController: AlertController,
     protected router: Router,
     protected activedRoute: ActivatedRoute,
@@ -28,9 +28,9 @@ export class AddUsuarioPage implements OnInit {
   ionViewWillEnter(){
     this.id = this.activedRoute.snapshot.paramMap.get("id");
     if (this.id) {
-      this.usuarioService.get(this.id).subscribe(
+      this.entregaService.get(this.id).subscribe(
         res => {
-          this.usuario = res
+          this.entrega = res
         },
         erro => this.id = null
       )
@@ -39,12 +39,12 @@ export class AddUsuarioPage implements OnInit {
 
   onsubmit(form) {
     if (this.id) {
-      this.usuarioService.update(this.usuario, this.id).then(
+      this.entregaService.update(this.entrega, this.id).then(
         res => {
           this.presentAlert("Aviso", "Atualizado!");
           form.reset();
-          this.usuario = new Usuario;
-          this.router.navigate(['/tabs/listUsuario']);
+          this.entrega = new Entrega;
+          this.router.navigate(['/tabs/listEntrega']);
         },
         erro => {
           console.log("Erro: " + erro);
@@ -52,12 +52,12 @@ export class AddUsuarioPage implements OnInit {
         }
       )
     } else {
-      this.usuarioService.save(this.usuario).then(
+      this.entregaService.save(this.entrega).then(
         res => {
           this.presentAlert("Aviso", "Cadastrado!");
           form.reset();
-          this.usuario = new Usuario;
-          this.router.navigate(['/tabs/listUsuario']);
+          this.entrega = new Entrega;
+          this.router.navigate(['/tabs/listEntrega']);
         },
         erro => {
           console.log("Erro: " + erro);

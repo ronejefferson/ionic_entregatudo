@@ -1,3 +1,4 @@
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,6 +8,17 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
-  constructor() {}
+  protected usuarios: any;
+
+  constructor(
+    protected usuarioService: UsuarioService,
+  ) {
+    this.usuarioService.getAll().subscribe(
+      res=>{
+        this.usuarios = res
+      }
+    )
+
+  }
 
 }

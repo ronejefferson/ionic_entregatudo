@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { Entrega } from '../model/entrega';
 import { map } from 'rxjs/operators'
-import { Usuario } from '../model/usuario';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService {
-
+export class EntregaService {
   constructor(
     protected fire: AngularFireDatabase
   ) { }
 
-  save(usuario) {
-    return this.fire.list("usuarios").push(usuario);
+  save(entrega) {
+    return this.fire.list("entregas").push(entrega);
   }
 
   getAll() {
-    return this.fire.list("usuarios").snapshotChanges()
+    return this.fire.list("entregas").snapshotChanges()
       .pipe(
         map(
           dados =>
@@ -27,14 +26,14 @@ export class UsuarioService {
   }
 
   get(id) {
-    return this.fire.object<Usuario>("usuarios/" + id).valueChanges();
+    return this.fire.object<Entrega>("entregas/" + id).valueChanges();
   }
 
   remover(id) {
-    return this.fire.object("usuarios/" + id).remove();
+    return this.fire.object("entregas/" + id).remove();
   }
 
-  update(usuario, id) {
-    return this.fire.object("usuarios/" + id).update(usuario)
+  update(entrega, id) {
+    return this.fire.object("entregas/" + id).update(entrega);
   }
 }

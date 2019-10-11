@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EntregaService } from 'src/app/services/entrega.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-list-entrega',
@@ -13,7 +14,8 @@ export class ListEntregaPage implements OnInit {
 
   constructor(
     protected entregaService: EntregaService,
-    protected router: Router
+    protected router: Router,
+    protected alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -35,7 +37,27 @@ export class ListEntregaPage implements OnInit {
 
   }
 
-  remover(key) {
-    this.entregaService.remover(key);
+  async remover(key) {
+    const alert = await this.alertController.create({
+      header: 'Apagar!',
+      message: 'Deseja apagar pdados definitivamente?',
+      buttons: [
+        {
+          text: 'Não',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Sim',
+          handler: () => {
+            this.entregaService.remover(key);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

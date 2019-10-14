@@ -5,4 +5,7 @@ export class Usuario {
     tel:string;
     pws:string;
     ativo:boolean = true;
+    lat:number;
+    lng:number;
+    
 }

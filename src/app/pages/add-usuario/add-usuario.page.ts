@@ -3,6 +3,7 @@ import { Usuario } from 'src/app/model/usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-add-usuario',
@@ -19,6 +20,7 @@ export class AddUsuarioPage implements OnInit {
     protected alertController: AlertController,
     protected router: Router,
     protected activedRoute: ActivatedRoute,
+    private geolocation: Geolocation
   ) { }
 
   ngOnInit() {
@@ -76,6 +78,17 @@ export class AddUsuarioPage implements OnInit {
     });
 
     await alert.present();
+  }
+  localAtual(){
+    this.geolocation.getCurrentPosition().then((resp) => {
+      // resp.coords.latitude
+      this.usuario.lat =resp.coords.latitude
+      // resp.coords.longitude
+      this.usuario.lng =resp.coords.longitude
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+     
   }
 
 }

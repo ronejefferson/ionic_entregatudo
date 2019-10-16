@@ -7,5 +7,5 @@ export class Usuario {
     ativo:boolean = true;
     lat:number;
     lng:number;
-    
+    foto:string;
 }

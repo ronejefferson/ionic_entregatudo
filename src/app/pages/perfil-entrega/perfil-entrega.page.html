@@ -1,13 +1,28 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>perfil-entrega</ion-title>
+    <ion-title>Perfil do Entrega</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let p of entrega.fotos ">
+      <img src="{{p}}">
+    </ion-slide>
+  </ion-slides>
+
   <ion-list lines="none">
     <ion-item>
-      <ion-label>Nome: {{usuario.nome}}</ion-label>
+      <ion-label>Produto: {{entrega.produto}}</ion-label>
     </ion-item>
-    </ion-list>
+    <ion-item>
+      <ion-label>Dscrição: {{entrega.descricao}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Peso: {{entrega.peso}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Valor: {{entrega.valor}}</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

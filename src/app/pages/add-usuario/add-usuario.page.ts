@@ -15,7 +15,7 @@ export class AddUsuarioPage implements OnInit {
 
   protected usuario: Usuario = new Usuario;
   protected id: string = null;
-  protected preview:string = null;
+  protected preview: string = null;
 
   constructor(
     protected usuarioService: UsuarioService,
@@ -44,38 +44,38 @@ export class AddUsuarioPage implements OnInit {
   }
 
   onsubmit(form) {
-    if (!this.preview){
+    if (!this.preview) {
       this.presentAlert("Ops!", "Tire sua foto!")
-    }else{
-    this.usuario.foto = this.preview;
-    if (this.id) {
-      this.usuarioService.update(this.usuario, this.id).then(
-        res => {
-          this.presentAlert("Aviso", "Atualizado!");
-          form.reset();
-          this.usuario = new Usuario;
-          this.router.navigate(['/tabs/listUsuario']);
-        },
-        erro => {
-          console.log("Erro: " + erro);
-          this.presentAlert("Erro", "Erro ao atualizar!");
-        }
-      )
     } else {
-      this.usuarioService.save(this.usuario).then(
-        res => {
-          this.presentAlert("Aviso", "Cadastrado!");
-          form.reset();
-          this.usuario = new Usuario;
-          this.router.navigate(['/tabs/listUsuario']);
-        },
-        erro => {
-          console.log("Erro: " + erro);
-          this.presentAlert("Erro", "Erro ao cadastrar!");
-        }
-      )
+      this.usuario.foto = this.preview;
+      if (this.id) {
+        this.usuarioService.update(this.usuario, this.id).then(
+          res => {
+            this.presentAlert("Aviso", "Atualizado!");
+            form.reset();
+            this.usuario = new Usuario;
+            this.router.navigate(['/tabs/listUsuario']);
+          },
+          erro => {
+            console.log("Erro: " + erro);
+            this.presentAlert("Erro", "Erro ao atualizar!");
+          }
+        )
+      } else {
+        this.usuarioService.save(this.usuario).then(
+          res => {
+            this.presentAlert("Aviso", "Cadastrado!");
+            form.reset();
+            this.usuario = new Usuario;
+            this.router.navigate(['/tabs/listUsuario']);
+          },
+          erro => {
+            console.log("Erro: " + erro);
+            this.presentAlert("Erro", "Erro ao cadastrar!");
+          }
+        )
+      }
     }
-  }
   }
 
   async presentAlert(titulo: string, texto: string) {

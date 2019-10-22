@@ -5,6 +5,17 @@
 </ion-header>
 
 <ion-content>
+  <ion-item lines="none">
+    <img src="assets/box.jpg" (click)="tirarFoto()" *ngIf="!preview">
+    <img [src]="preview[preview.length-1]" (click)="tirarFoto()" *ngIf="preview">
+  </ion-item>
+
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let p of preview ; let i = index">
+      <img src="{{p}}" (click)="removerFoto(i)">
+    </ion-slide>
+  </ion-slides>
+
   <form #fc="ngForm" (ngSubmit)="onsubmit(fc)">
     <ion-item>
       <ion-label position="floating">Produto</ion-label>

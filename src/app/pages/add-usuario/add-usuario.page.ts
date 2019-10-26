@@ -6,6 +6,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
+import {
+  GoogleMaps,
+  GoogleMap,
+  GoogleMapsEvent,
+  GoogleMapOptions,
+  CameraPosition,
+  MarkerOptions,
+  Marker,
+  Environment
+} from '@ionic-native/google-maps';
+
 @Component({
   selector: 'app-add-usuario',
   templateUrl: './add-usuario.page.html',
@@ -16,6 +27,7 @@ export class AddUsuarioPage implements OnInit {
   protected usuario: Usuario = new Usuario;
   protected id: string = null;
   protected preview: string = null;
+  protected map: GoogleMap;
 
   constructor(
     protected usuarioService: UsuarioService,
@@ -26,8 +38,16 @@ export class AddUsuarioPage implements OnInit {
     private camera: Camera
   ) { }
 
+
+
+
   ngOnInit() {
+
     this.localAtual()
+
+  }
+  ionViewDidLoad() {
+
   }
 
   //função chamada toda vez que a pagina recebe foco;
@@ -93,6 +113,7 @@ export class AddUsuarioPage implements OnInit {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.usuario.lat = resp.coords.latitude
       this.usuario.lng = resp.coords.longitude
+      this.localAtual()
     }).catch((error) => {
       console.log('Error getting location', error);
     });
@@ -101,7 +122,7 @@ export class AddUsuarioPage implements OnInit {
   tirarFoto() {
     const options: CameraOptions = {
       quality: 50,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
     }
@@ -114,6 +135,42 @@ export class AddUsuarioPage implements OnInit {
     }, (err) => {
       // Handle error
     });
+  }
+  loadMap() {
+
+    let mapOptions: GoogleMapOptions = {
+      camera: {
+        target: {
+          lat: this.usuario.lat,
+          lng: this.usuario.lng
+        },
+        zoom: 18,
+        tilt: 30
+      }
+    };
+
+    this.map = GoogleMaps.create('map_canvas', mapOptions);
+
+    let marker: Marker = this.map.addMarkerSync({
+      title: 'Ionic',
+      icon: 'blue',
+      animation: 'DROP',
+      position: {
+        lat: this.usuario.lat,
+        lng: this.usuario.lng
+      }
+    });
+    marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+      alert('clicked');
+    });
+    this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe(
+      res => {
+                console.log(res);
+                marker.setPosition(res[0]);
+                this.usuario.lat = res[0].lat;
+                this.usuario.lng = res[0].lng;
+               }
+    )
   }
 
 }
